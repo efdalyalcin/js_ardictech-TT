@@ -12,27 +12,26 @@ function determinePalatalHarmony(word) {
   );
 }
 
-determinePalatalHarmony("enamely");
-
 // 2. Pazar Günlerini Bulma (Find the sundays that is the 1st day of month)
 function findSundays() {
   const sundays = [];
 
   const fromDate = new Date();
   let year = 1900;
-  let month = 0;
+  let month = 1;
 
   while (year < 2000) {
-    if (month === 11) {
+    if (month === 12) {
       year++;
-      month = 0;
+      month = 1;
     }
+     fromDate.setFullYear(year, month++, 1);
 
-    fromDate.setFullYear(year, month++, 1);
-
+    // getDay method gets the day of the week, 0 is Sunday
     if (fromDate.getDay() === 0) {
+      // getDay and getMonth starts from 0
       const getDay = fromDate.getDay() + 1;
-      const getMonth = fromDate.getMonth();
+      const getMonth = fromDate.getMonth() + 1;
       const getYear = fromDate.getFullYear();
       const date = `${getDay}/${getMonth}/${getYear}`;
 
@@ -47,6 +46,13 @@ function findSundays() {
 // (Find if there is an anomaly like there are 2 links directing to same node
 // in a binary tree algorithm)
 function findBinaryTreeAnomaly(tree) {
+  // I assumed the tree is like a json file
+  // tree = [
+  //   {number: 4, left: 2, right: 7}, 
+  //   {number: 7, left: 6, right: 11},
+  //   {number: 6, left: 5},
+  // ]
+  // I solved the question according to this assumption. Tree looks sth like the above.
   const leftLinks = [];
   const rightLinks = [];
 
