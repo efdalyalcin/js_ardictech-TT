@@ -21,10 +21,6 @@ function findSundays() {
   let month = 1;
 
   while (year < 2000) {
-    if (month === 12) {
-      year++;
-      month = 1;
-    }
      fromDate.setFullYear(year, month++, 1);
 
     // getDay method gets the day of the week, 0 is Sunday
@@ -36,6 +32,11 @@ function findSundays() {
       const date = `${getDay}/${getMonth}/${getYear}`;
 
       sundays.push(date);
+    }
+
+    if (month === 12) {
+      year++;
+      month = 1;
     }
   }
 
