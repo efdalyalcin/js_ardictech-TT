@@ -117,6 +117,7 @@ function findSundays() {
 // if node doesn't have a child it gets false
 const node = (value, left = false, right = false) => ({ value, left, right });
 const tree = [node(5, 3, 7), node(7, 6), node(11, 5, 13), node(13, 12)];
+const anomalyTree = [node(5, 3, 7), node(7, 6), node(11, 5, 13), node(13, 7)]
 // Initial tree looks like sth like this
   // tree = [
   //   {value: 5, left: 3, right: 7},
