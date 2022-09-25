@@ -3,7 +3,7 @@
 // This one is O(n) in worst case.
 // If we are gonna feed with an dictionary (words array) it will give an other O(n)
 // which will result to O(n^2)
-function determinePalatalHarmony(word) {
+function isPalatalHarmony(word) {
   let boldVowelCount = 0; // [aouı]
   let thinVowelsCount = 0; // [eiöü]
 
@@ -107,33 +107,48 @@ function findSundays() {
   return sundays;
 }
 
-console.log(findSundays());
+// console.log(findSundays());
 
 // 3. İkil Ağaçta Anomali Tespiti
 // (Find if there is an anomaly like there are 2 links directing to same node
 // in a binary tree algorithm)
-function findBinaryTreeAnomaly(tree) {
-  // I assumed the tree is like a json file
-  // tree = [
-  //   {number: 4, left: 2, right: 7},
-  //   {number: 7, left: 6, right: 11},
-  //   {number: 6, left: 5},
-  // ]
-  // I solved the question according to this assumption. Tree looks sth like the above.
-  const leftLinks = [];
-  const rightLinks = [];
 
-  tree.forEach((node) => {
-    if (node.left) leftLinks.push(node.left);
-    if (node.right) rightLinks.push(node.right);
+// creation of the node tree
+// if node doesn't have a child it gets false
+const node = (value, left = false, right = false) => ({ value, left, right });
+const tree = [node(5, 3, 7), node(7, 6), node(11, 5, 13), node(13, 12)];
+// Initial tree looks like sth like this
+  // tree = [
+  //   {value: 5, left: 3, right: 7},
+  //   {value: 7, left: 6, right: false},
+  //   {value: 11, left: 5, right: 13},
+  //   {value: 13, left: 12, right: false},
+  // ]
+
+// the old code was O(3n) which means O(n) in worst case
+// but if I try to instantly return the code when there is an anomaly,
+// the complexity is O(n * 2n) => O(n^2) in the worst case
+// I am not sure for this one because if no anomaly, it will take much more time.
+function hasAnomalyInBinaryTree(tree) {
+  const linkedNodes = [];
+
+  const isAnomaly = tree.some((node) => {
+    if (node.left) {
+      if (linkedNodes.includes(node.left)) return true;
+
+      linkedNodes.push(node.left)
+    }
+    if (node.right) {
+      if (linkedNodes.includes(node.right)) return true;
+
+      linkedNodes.push(node.right)
+    }
+    if (node.right === node.value || node.left === node.value) {
+      return true
+    }
+
+    return false
   });
 
-  const uniqueLeftLinks = [...new Set(leftLinks)];
-  const uniqueRightLinks = [...new Set(rightLinks)];
-
-  // check anomaly, if every link is unique return false (no anomaly)
-  return (
-    leftLinks.length === uniqueLeftLinks.length &&
-    rightLinks.length === uniqueRightLinks.length
-  );
+  return isAnomaly;
 }
