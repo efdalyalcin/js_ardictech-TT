@@ -4,28 +4,30 @@
 // If we are gonna feed with an dictionary (words array) it will give an other O(n)
 // which will result to O(n^2)
 function isPalatalHarmony(word) {
+  const lowerCase = word.toLocaleLowerCase('tr');
   let boldVowelCount = 0; // [aouı]
   let thinVowelsCount = 0; // [eiöü]
 
   for (let i = 0; i < word.length; i++) {
     if (
-      word[i] === "a" ||
-      word[i] === "o" ||
-      word[i] === "u" ||
-      word[i] === "ı"
+      lowerCase[i] === "a" ||
+      lowerCase[i] === "o" ||
+      lowerCase[i] === "u" ||
+      lowerCase[i] === "ı"
     ) {
       boldVowelCount++;
     }
 
     if (
-      word[i] === "e" ||
-      word[i] === "i" ||
-      word[i] === "ö" ||
-      word[i] === "ü"
+      lowerCase[i] === "e" ||
+      lowerCase[i] === "i" ||
+      lowerCase[i] === "ö" ||
+      lowerCase[i] === "ü"
     ) {
       thinVowelsCount++;
     }
 
+    // this turns false as soon as there are both thin and bold vowels
     if (boldVowelCount && thinVowelsCount) return false;
   }
 
@@ -54,7 +56,7 @@ function findSundays() {
     '12': 31,
   };
 
-  const EACH_FOURTH_YEAR = {
+  const LEAP_YEAR = {
     '1': 31,
     '2': 29,
     '3': 31,
@@ -77,11 +79,11 @@ function findSundays() {
     for (const key in REGULAR_DAYS_IN_YEAR) {
       if (year % 4 === 0 && year !== 1900) {
         // februaries are 29 days
-        while (sundayDate < EACH_FOURTH_YEAR[key]) {
+        while (sundayDate < LEAP_YEAR[key]) {
           sundayDate += WEEK_DAYS;
         }
 
-        sundayDate -= EACH_FOURTH_YEAR[key];
+        sundayDate -= LEAP_YEAR[key];
       } else {
         // februaries are 28 days
         while (sundayDate < REGULAR_DAYS_IN_YEAR[key]) {
@@ -115,15 +117,15 @@ function findSundays() {
 
 // creation of the node tree
 // if node doesn't have a child it gets false
-const node = (value, left = false, right = false) => ({ value, left, right });
-const tree = [node(5, 3, 7), node(7, 6), node(11, 5, 13), node(13, 12)];
-const anomalyTree = [node(5, 3, 7), node(7, 6), node(11, 5, 13), node(13, 7)]
+const node = (left = false, right = false) => ({left, right });
+const tree = [node(3, 7), node(4, 6), node(13), node(11, 12)];
+const anomalyTree = [node(3, 7), node(1, 2), node(5, 13), node(4, 13)];
 // Initial tree looks like sth like this
   // tree = [
-  //   {value: 5, left: 3, right: 7},
-  //   {value: 7, left: 6, right: false},
-  //   {value: 11, left: 5, right: 13},
-  //   {value: 13, left: 12, right: false},
+  //   {left: 3, right: 7},
+  //   {left: 4, right: 6},
+  //   {left: 13, right: false},
+  //   {left: 11, right: 12},
   // ]
 
 // the old code was O(3n) which means O(n) in worst case
@@ -143,9 +145,6 @@ function hasAnomalyInBinaryTree(tree) {
       if (linkedNodes.includes(node.right)) return true;
 
       linkedNodes.push(node.right)
-    }
-    if (node.right === node.value || node.left === node.value) {
-      return true
     }
 
     return false
